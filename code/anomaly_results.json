@@ -1,0 +1,181 @@
+{
+  "dataset": {
+    "n_hospitals": 165,
+    "n_obs": 827,
+    "years": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "deficit_rate": 41.4
+  },
+  "algorithm_anomaly_rates": {
+    "IF": 10.0,
+    "LOF": 10.0,
+    "OCSVM": 10.2,
+    "DBSCAN": 6.2,
+    "AE": 10.0
+  },
+  "consensus": {
+    "n_anomalies": 57,
+    "rate": 6.9
+  },
+  "temporal_consensus": {
+    "2019": 6.1,
+    "2020": 7.3,
+    "2021": 4.8,
+    "2022": 7.8,
+    "2023": 8.5
+  },
+  "deficit_overlap": {
+    "n_deficit": 342,
+    "n_anomaly": 57,
+    "n_both": 27,
+    "pct_deficit_flagged": 7.9,
+    "pct_anomaly_in_deficit": 47.4,
+    "chi2": 0.67,
+    "chi2_p": 0.4144
+  },
+  "mann_whitney_results": [
+    {
+      "feature": "Material Cost Ratio",
+      "mean_normal": 0.2516,
+      "mean_anomaly": 0.2488,
+      "u_stat": 20862.0,
+      "p_value": 0.5339,
+      "significant": false
+    },
+    {
+      "feature": "Labor Cost Ratio",
+      "mean_normal": 0.5748,
+      "mean_anomaly": 0.8955,
+      "u_stat": 29594.0,
+      "p_value": 0.0,
+      "significant": true
+    },
+    {
+      "feature": "Admin Cost Ratio",
+      "mean_normal": 0.2208,
+      "mean_anomaly": 0.4091,
+      "u_stat": 33712.0,
+      "p_value": 0.0,
+      "significant": true
+    },
+    {
+      "feature": "Debt Ratio",
+      "mean_normal": 0.7321,
+      "mean_anomaly": 0.7853,
+      "u_stat": 19525.0,
+      "p_value": 0.1644,
+      "significant": false
+    },
+    {
+      "feature": "Subsidy Ratio",
+      "mean_normal": 0.0265,
+      "mean_anomaly": 0.1632,
+      "u_stat": 30696.0,
+      "p_value": 0.0,
+      "significant": true
+    },
+    {
+      "feature": "Log Revenue",
+      "mean_normal": 25.1104,
+      "mean_anomaly": 24.6432,
+      "u_stat": 15501.0,
+      "p_value": 0.0002,
+      "significant": true
+    },
+    {
+      "feature": "Log Beds",
+      "mean_normal": 5.9482,
+      "mean_anomaly": 5.7493,
+      "u_stat": 16602.0,
+      "p_value": 0.0021,
+      "significant": true
+    },
+    {
+      "feature": "University Hospital",
+      "mean_normal": 0.2156,
+      "mean_anomaly": 0.1579,
+      "u_stat": 20679.0,
+      "p_value": 0.304,
+      "significant": false
+    },
+    {
+      "feature": "Public Hospital",
+      "mean_normal": 0.2325,
+      "mean_anomaly": 0.5439,
+      "u_stat": 28778.5,
+      "p_value": 0.0,
+      "significant": true
+    },
+    {
+      "feature": "Tertiary Hospital",
+      "mean_normal": 0.1649,
+      "mean_anomaly": 0.1404,
+      "u_stat": 21405.5,
+      "p_value": 0.6285,
+      "significant": false
+    },
+    {
+      "feature": "Year",
+      "mean_normal": 1.9896,
+      "mean_anomaly": 2.1579,
+      "u_stat": 23424.5,
+      "p_value": 0.3857,
+      "significant": false
+    }
+  ],
+  "jaccard_matrix": [
+    [
+      1.0,
+      0.23880597014925373,
+      0.42735042735042733,
+      0.30097087378640774,
+      0.30708661417322836
+    ],
+    [
+      0.23880597014925373,
+      1.0,
+      0.38016528925619836,
+      0.3673469387755102,
+      0.328
+    ],
+    [
+      0.42735042735042733,
+      0.38016528925619836,
+      1.0,
+      0.42105263157894735,
+      0.5045045045045045
+    ],
+    [
+      0.30097087378640774,
+      0.3673469387755102,
+      0.42105263157894735,
+      1.0,
+      0.3673469387755102
+    ],
+    [
+      0.30708661417322836,
+      0.328,
+      0.5045045045045045,
+      0.3673469387755102,
+      1.0
+    ]
+  ],
+  "shap_importance": {
+    "University Hospital": 0.4756,
+    "Public Hospital": 0.459,
+    "Tertiary Hospital": 0.3723,
+    "Subsidy Ratio": 0.3531,
+    "Log Revenue": 0.2332,
+    "Log Beds": 0.224,
+    "Admin Cost Ratio": 0.2237,
+    "Labor Cost Ratio": 0.2217,
+    "Year": 0.2116,
+    "Debt Ratio": 0.1841,
+    "Material Cost Ratio": 0.1758
+  }
+}
