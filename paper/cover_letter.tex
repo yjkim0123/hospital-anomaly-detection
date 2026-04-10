@@ -1,0 +1,37 @@
+\documentclass[11pt]{letter}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+
+\signature{Yongjun Kim \\ Department of Software, Ajou University \\ Suwon 16499, Republic of Korea \\ Email: yjkim0123@ajou.ac.kr}
+
+\address{Yongjun Kim \\ Department of Software \\ Ajou University \\ Suwon 16499, Republic of Korea}
+
+\begin{document}
+
+\begin{letter}{Editor-in-Chief \\ IEEE Access}
+
+\opening{Dear Editor,}
+
+We are pleased to submit our manuscript entitled \textbf{``Unsupervised Anomaly Detection in Hospital Financial Statements: A Multi-Algorithm Consensus Approach with Explainable AI''} for consideration for publication in \textit{IEEE Access}.
+
+This paper proposes a multi-algorithm consensus framework for unsupervised anomaly detection in hospital financial statements. Unlike supervised approaches that require labeled datasets---an assumption rarely met in healthcare financial surveillance---our framework combines five complementary unsupervised algorithms (Isolation Forest, Local Outlier Factor, One-Class SVM, DBSCAN, and autoencoder) and identifies ``strong anomalies'' flagged by three or more methods.
+
+Key contributions include:
+
+\begin{itemize}
+\item A consensus mechanism that reduces false positives inherent in any single algorithm while capturing diverse notions of abnormality, yielding 57 consensus anomalies (6.9\%) from a balanced panel of 165 Korean hospitals over 2019--2023 ($N = 827$).
+\item Statistical validation showing that consensus anomalies exhibit significantly higher labor cost ratios, administrative cost ratios, and subsidy dependence ($p < 0.001$ for all).
+\item SHAP-based explainability analysis on the Isolation Forest model, identifying hospital ownership type, subsidy ratio, and administrative costs as primary drivers of anomaly scores.
+\item A key finding that only 47.4\% of consensus anomalies overlap with accounting-deficit hospitals ($\chi^2 = 0.67$, $p = 0.414$), demonstrating that unsupervised anomaly detection captures structurally unusual financial patterns beyond simple profitability.
+\end{itemize}
+
+We believe this work is well-suited for \textit{IEEE Access} because it bridges unsupervised machine learning methodology with healthcare financial surveillance, providing a practical tool for regulators. The framework is algorithm-agnostic and generalizable to other organizational financial monitoring settings.
+
+This manuscript has not been published previously, is not under consideration for publication elsewhere, and its publication is approved by all authors. The authors declare no conflicts of interest.
+
+Analysis code is publicly available at: \url{https://github.com/yjkim0123/hospital-anomaly-detection}.
+
+\closing{Sincerely,}
+
+\end{letter}
+\end{document}

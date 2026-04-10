@@ -1,0 +1,36 @@
+{
+  "zscore_statistics": {
+    "mean": 0.479,
+    "std": 10.995,
+    "distress_rate": 58.2
+  },
+  "consensus_anomaly_rate": 6.9,
+  "overlap": {
+    "both": 32,
+    "distress_only": 449,
+    "anomaly_only": 25,
+    "neither": 321,
+    "pct_distress_also_anomaly": 6.7,
+    "pct_anomaly_also_distress": 56.1,
+    "jaccard_similarity": 0.063
+  },
+  "chi_squared_test": {
+    "chi2": 0.03,
+    "p_value": 0.856,
+    "dof": 1,
+    "phi_coefficient": 0.006,
+    "significant": false
+  },
+  "deficit_rates_by_group": {
+    "distress_only": 51.4,
+    "anomaly_only": 40.0,
+    "both": 53.1,
+    "neither": 26.2
+  },
+  "complementary_detection": {
+    "total_flagged": 506,
+    "only_zscore": 449,
+    "only_anomaly": 25,
+    "both": 32
+  }
+}

@@ -13,6 +13,11 @@
 
 \graphicspath{{../figures/}}
 
+% Fix for ieeeaccess.cls xfigwd bug
+\makeatletter
+\ifdefined\xfigwd\else\xdef\xfigwd{0pt}\fi
+\makeatother
+
 \begin{document}
 \history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
 % \doi{} % Assigned by IEEE upon acceptance
@@ -20,13 +25,12 @@
 \title{Unsupervised Anomaly Detection in Hospital Financial Statements: A Multi-Algorithm Consensus Approach with Explainable AI}
 
 \author{
-\uppercase{Yongjun Kim}\authorrefmark{1},
-ORCID: 0000-0003-4234-4883
+\uppercase{Yongjun Kim}\authorrefmark{1}
 and
 \uppercase{Eun Jung Sun}\authorrefmark{2}
-(Corresponding Author: Eun Jung Sun)}
+(Corresponding Author)}
 
-\address[1]{Department of Software, Ajou University, Suwon 16499, South Korea (e-mail: yjkim0123@ajou.ac.kr)}
+\address[1]{Department of Software, Ajou University, Suwon 16499, South Korea (e-mail: yjkim0123@ajou.ac.kr; ORCID: 0000-0003-4234-4883)}
 \address[2]{Department of Accounting, College of Economics and Business Administration, Hannam University, Daejeon 34430, South Korea (e-mail: belle@hnu.kr)}
 
 \tfootnote{This research received no external funding.}
@@ -36,7 +40,7 @@ and
 {Kim and Sun: Unsupervised Anomaly Detection in Hospital Financial Statements}
 
 \begin{abstract}
-Monitoring the financial health of hospitals is critical for healthcare sustainability, yet traditional approaches rely on supervised learning methods that require labeled datasets---an assumption rarely met in practice. This study proposes a multi-algorithm consensus framework for unsupervised anomaly detection in hospital financial statements. Using a balanced panel of 165 Korean general and tertiary hospitals over five fiscal years (2019--2023, $N = 827$), we apply five complementary unsupervised algorithms: Isolation Forest, Local Outlier Factor, One-Class SVM, DBSCAN, and an autoencoder based on reconstruction error. A consensus mechanism identifies ``strong anomalies'' as observations flagged by three or more algorithms, yielding 57 consensus anomalies (6.9\%). Mann-Whitney U tests reveal that consensus anomalies exhibit significantly higher labor cost ratios ($p < 0.001$), administrative cost ratios ($p < 0.001$), and subsidy dependence ($p < 0.001$) compared to normal hospitals. Temporal analysis shows anomaly rates increasing from 6.1\% in 2019 to 8.5\% in 2023, suggesting growing financial heterogeneity in the post-COVID era. SHAP-based explainability analysis on the Isolation Forest identifies hospital ownership type, subsidy ratio, and administrative costs as the primary drivers of anomaly scores. Notably, only 47.4\% of consensus anomalies overlap with accounting-deficit hospitals ($\chi^2 = 0.67$, $p = 0.414$), indicating that unsupervised anomaly detection captures structurally unusual financial patterns beyond simple profitability, offering a complementary surveillance tool for healthcare regulators.
+Monitoring the financial health of hospitals is critical for healthcare sustainability, yet traditional approaches rely on supervised learning methods that require labeled datasets---an assumption rarely met in practice. This study presents a multi-algorithm consensus framework for unsupervised anomaly detection in hospital financial statements. Using a balanced panel of 165 Korean general and tertiary hospitals over five fiscal years (2019--2023, $N = 827$), we apply five complementary unsupervised algorithms: Isolation Forest, Local Outlier Factor, One-Class SVM, DBSCAN, and an autoencoder based on reconstruction error. A consensus mechanism identifies ``strong anomalies'' as observations flagged by three or more algorithms, yielding 57 consensus anomalies (6.9\%). Mann-Whitney U tests reveal that consensus anomalies exhibit significantly higher labor cost ratios ($p < 0.001$), administrative cost ratios ($p < 0.001$), and subsidy dependence ($p < 0.001$) compared to normal hospitals. Temporal analysis shows anomaly rates increasing from 6.1\% in 2019 to 8.5\% in 2023, suggesting growing financial heterogeneity in the post-COVID era. SHAP-based explainability analysis on the Isolation Forest identifies hospital ownership type, subsidy ratio, and administrative costs as the primary drivers of anomaly scores. Notably, only 47.4\% of consensus anomalies overlap with accounting-deficit hospitals ($\chi^2 = 0.67$, $p = 0.414$); the difference is not statistically significant, indicating that unsupervised anomaly detection captures structurally unusual financial patterns beyond simple profitability, potentially offering a complementary surveillance tool for healthcare regulators.
 \end{abstract}
 
 \begin{keywords}
@@ -60,7 +64,7 @@ Unsupervised anomaly detection offers a compelling alternative. Rather than requ
 
 However, unsupervised methods suffer from a well-known limitation: different algorithms make different assumptions about data structure and consequently flag different subsets of observations~\cite{goldstein2016comparative, domingues2018comparative}. An Isolation Forest excels at identifying globally isolated points in feature space~\cite{liu2008isolation}, while the Local Outlier Factor captures local density deviations~\cite{breunig2000lof}, and One-Class SVM delineates a boundary around the support of the data distribution~\cite{scholkopf2001estimating}. No single algorithm is universally optimal.
 
-To address this challenge, we propose a \textbf{multi-algorithm consensus framework} that combines five complementary unsupervised anomaly detection algorithms and identifies ``strong anomalies'' as observations flagged by three or more methods. This ensemble approach reduces the false-positive rate inherent in any single algorithm while capturing diverse notions of abnormality. We further enhance interpretability by applying SHAP (SHapley Additive exPlanations)~\cite{lundberg2017unified} to explain the drivers of anomaly scores, bridging the gap between black-box detection and actionable insight.
+To address this challenge, we present a \textbf{multi-algorithm consensus framework} that combines five complementary unsupervised anomaly detection algorithms and identifies ``strong anomalies'' as observations flagged by three or more methods. This ensemble approach reduces the false-positive rate inherent in any single algorithm while capturing diverse notions of abnormality. We further enhance interpretability by applying SHAP (SHapley Additive exPlanations)~\cite{lundberg2017unified} to explain the drivers of anomaly scores, bridging the gap between black-box detection and actionable insight.
 
 Our contributions are as follows:
 \begin{enumerate}
@@ -91,7 +95,7 @@ Research on hospital financial performance has a long history rooted in financia
 
 Bai and Anderson~\cite{bai2016analysis} analyzed the financial performance of U.S. hospitals from 2006 to 2013 using operating margins and total margins, revealing significant variation by ownership type and geographic location. Langabeer et al.~\cite{langabeer2018predicting} used logistic regression to predict financial distress in acute care hospitals, finding that liquidity ratios and profitability measures were the most significant determinants. Enumah and Chang~\cite{holmes2021predictors} extended this work by examining predictors of financial distress among private U.S. hospitals, identifying case complexity and outpatient revenue proportion as potential intervention points. More recently, {\"O}ner and Ba{\c{s}}o{\u{g}}lu~\cite{oner2024hospital} applied machine learning methods---including Random Forest, XGBoost, and neural networks---to evaluate hospital financial distress, demonstrating that AI-based approaches can improve predictive accuracy over traditional ratio-based methods.
 
-The COVID-19 pandemic catalyzed renewed interest in hospital financial vulnerability. Cutler~\cite{cutler2020impact} documented the pandemic's impact on U.S. healthcare finances, while Khullar et al.~\cite{khullar2020covid} specifically examined the financial health of U.S. hospitals during the pandemic. In Korea, Lee~\cite{lee2024covid} provided an observational study of the pandemic's differential impact on hospital financial performance according to hospital characteristics. Kim and Sun~\cite{kim2024financial} applied panel data analysis combined with supervised machine learning (Random Forest, Gradient Boosting) to predict financial distress in Korean general hospitals, identifying material cost ratio and year effects as key predictors. However, their supervised approach required binary deficit labels, limiting its applicability to surveillance scenarios where labels are unavailable.
+The COVID-19 pandemic catalyzed renewed interest in hospital financial vulnerability. Cutler~\cite{cutler2020impact} documented the pandemic's impact on U.S. healthcare finances, while Khullar et al.~\cite{khullar2020covid} specifically examined the financial health of U.S. hospitals during the pandemic. In Korea, Lee~\cite{lee2024covid} provided an observational study of the pandemic's differential impact on hospital financial performance according to hospital characteristics. In a companion study using the same Korean hospital dataset, Kim and Sun~\cite{kim2024financial} applied panel data analysis combined with supervised machine learning (Random Forest, Gradient Boosting) to predict financial distress, identifying material cost ratio and year effects as key predictors. The present paper complements that supervised approach by providing an unsupervised alternative that does not require binary deficit labels, making it applicable to surveillance scenarios where such labels are unavailable or unreliable. The supervised and unsupervised approaches address fundamentally different analytical questions: supervised methods require binary labels and predict known outcomes, while unsupervised methods identify structurally unusual patterns without predefined categories, potentially revealing risks invisible to label-dependent approaches.
 
 \subsection{Unsupervised vs.\ Supervised Approaches and Ensemble Methods}
 \label{subsec:unsupervised_vs_supervised}
@@ -255,7 +259,9 @@ Public Hospital & 0.233 & 0.544 & $<$0.001*** \\
 Tertiary Hospital & 0.165 & 0.140 & 0.629 \\
 Year & 1.990 & 2.158 & 0.386 \\
 \bottomrule
-\multicolumn{4}{l}{\footnotesize *** $p < 0.001$, ** $p < 0.01$, * $p < 0.05$}
+\multicolumn{4}{l}{\footnotesize *** $p < 0.001$, ** $p < 0.01$, * $p < 0.05$} \\
+\multicolumn{4}{l}{\footnotesize Note: With Bonferroni correction for 11 tests ($\alpha = 0.05/11 \approx 0.0045$),} \\
+\multicolumn{4}{l}{\footnotesize all six significant features remain significant.}
 \end{tabular}
 \end{table}
 
@@ -323,11 +329,22 @@ Table~\ref{tab:types} breaks down consensus anomaly rates by establishment type 
 
 A critical question is whether unsupervised anomaly detection merely recapitulates what supervised methods already capture. To address this, we compare consensus anomalies with accounting-deficit labels (net income $< 0$).
 
-Of the 342 deficit observations (41.4\% of the sample), only 27 overlap with the 57 consensus anomalies. Thus, only 7.9\% of deficit hospitals are flagged as consensus anomalies, and 47.4\% of consensus anomalies are in deficit. The chi-squared test yields $\chi^2 = 0.67$ ($p = 0.414$), indicating no significant association between anomaly status and deficit status.
+Of the 342 deficit observations (41.4\% of the sample), only 27 overlap with the 57 consensus anomalies. Thus, only 7.9\% of deficit hospitals are flagged as consensus anomalies, and 47.4\% of consensus anomalies are in deficit. The chi-squared test yields $\chi^2 = 0.67$ ($p = 0.414$); we cannot reject the null hypothesis of independence between anomaly status and deficit status.
 
 This finding is noteworthy: it demonstrates that unsupervised anomaly detection captures \textit{structurally unusual} financial profiles rather than simply identifying loss-making hospitals. A hospital may report a deficit for benign reasons (temporary investment cycles, one-time expenses), while a hospital with positive net income may exhibit an anomalous cost structure suggestive of operational inefficiency or revenue dependence on subsidies.
 
 Table~\ref{tab:overlap} summarizes the overlap by algorithm. Among individual algorithms, the autoencoder and DBSCAN show the highest overlap with deficit status (53.0\% and 51.0\%, respectively), while Isolation Forest shows the lowest (39.8\%), suggesting that different algorithms capture different dimensions of financial risk.
+
+\subsection{Comparison with Altman Z''-Score Distress}
+\label{subsec:zscore}
+
+To further contextualize our unsupervised approach, we compare consensus anomalies against a traditional credit scoring baseline: Altman's Z''-score~\cite{altman2002revisiting}, a variant designed for non-manufacturing and private firms. Using hospital financial data, we compute $Z'' = 6.56 X_1 + 3.26 X_2 + 6.72 X_3 + 1.05 X_4$, where $X_1$ = working capital/total assets, $X_2$ = retained earnings/total assets, $X_3$ = EBIT/total assets, and $X_4$ = book value of equity/total liabilities. For hospitals, we substitute medical operating income for EBIT and accumulated surplus/deficit for retained earnings.
+
+Applying the standard distress threshold ($Z'' < 1.1$) classifies 58.2\% of observations as financially distressed---substantially higher than both the consensus anomaly rate (6.9\%) and the deficit rate (41.4\%). Strikingly, the overlap between Z-score distress and consensus anomaly is minimal: only 32 observations (3.9\% of total) are flagged by both methods, yielding a Jaccard similarity of just 0.063. The chi-squared test shows no significant association ($\chi^2 = 0.03$, $p = 0.856$, $\phi = 0.006$).
+
+This independence reveals a critical insight: consensus anomalies capture \textit{different} hospitals than traditional credit scoring. While Z-score distress flags 58.2\% of observations based primarily on capital structure ratios, consensus anomalies identify a smaller subset (6.9\%) characterized by unusual \textit{operational} cost patterns. Among hospitals flagged \textit{only} by the Z-score (not anomaly), the deficit rate is 51.4\%. Among hospitals flagged \textit{only} as anomalies (not Z-score distress), the deficit rate is 40.0\%. Hospitals flagged by \textit{both} methods show a deficit rate of 53.1\%, while those flagged by \textit{neither} have the lowest rate at 26.2\%.
+
+The complementary nature of these approaches suggests that combining traditional credit scoring with unsupervised anomaly detection may yield more comprehensive financial surveillance than either method alone---Z-scores capture capital structure stress while consensus anomalies identify operational pattern deviations.
 
 \begin{table}[!t]
 \centering
@@ -509,7 +526,7 @@ The Korean government disbursed substantial subsidies to hospitals during the pa
 South Korea has experienced ongoing debates about public hospital restructuring, with several regional public medical centers facing financial difficulties and closure threats~\cite{yeo2018closure}. Our framework independently identifies multiple regional public medical centers as persistently anomalous (Section~\ref{subsec:persistence}), including institutions that have been subjects of public restructuring discussions. For example, the Seoul Metropolitan Dongbu Hospital, flagged as anomalous in 2021--2023, has been reported in Korean media as facing potential restructuring. This convergence between our data-driven anomaly detection and independently reported financial difficulties provides external validation of the framework's relevance.
 
 \subsubsection{Semi-Supervised Validation via Deficit Overlap}
-While Section~\ref{subsec:overlap} demonstrated limited aggregate overlap between anomalies and deficits ($\chi^2 = 0.67$, $p = 0.414$), a more nuanced analysis reveals meaningful patterns. Among persistently anomalous hospitals (those appearing in 3+ years), the deficit rate is 52.8\% across their anomalous observations, compared to 38.1\% for hospitals appearing anomalous in only a single year. This suggests that temporal persistence of anomaly status, rather than anomaly detection in any single year, may serve as a more reliable indicator of genuine financial distress. Furthermore, among hospitals flagged by all five algorithms ($C_i = 5$, $n = 21$), the deficit rate is substantially higher, reaching approximately 57\%. These findings suggest that the intensity of algorithmic consensus (higher $C_i$ values) and temporal persistence jointly serve as informative proxies for financial risk, even in the absence of formal ground truth labels.
+While Section~\ref{subsec:overlap} demonstrated limited aggregate overlap between anomalies and deficits ($\chi^2 = 0.67$, $p = 0.414$)---the difference not being statistically significant---a more nuanced analysis reveals meaningful patterns. Among persistently anomalous hospitals (those appearing in 3+ years), the deficit rate is 52.8\% across their anomalous observations, compared to 38.1\% for hospitals appearing anomalous in only a single year. This suggests that temporal persistence of anomaly status, rather than anomaly detection in any single year, may serve as a more reliable indicator of genuine financial distress. Furthermore, among hospitals flagged by all five algorithms ($C_i = 5$, $n = 21$), the deficit rate is substantially higher, reaching approximately 57\%. These findings suggest that the intensity of algorithmic consensus (higher $C_i$ values) and temporal persistence jointly serve as informative proxies for financial risk, even in the absence of formal ground truth labels.
 
 Table~\ref{tab:validation_summary} summarizes these validation dimensions, showing how different evidence sources corroborate the framework's relevance.
 
@@ -529,7 +546,7 @@ New post-COVID anomalies & 12 hospitals newly anomalous in 2022--2023, reflectin
 \end{tabular}
 \end{table}
 
-\subsection{Limitations}
+\subsection{Limitations and Methodological Considerations}
 \label{subsec:limitations}
 
 Several limitations should be noted. First, our dataset is limited to Korean hospitals, and results may not generalize to healthcare systems with different financial structures, reimbursement mechanisms, or ownership models. The Korean system's unique combination of a national health insurance scheme, a mixed public-private hospital landscape, and specific subsidy structures may produce anomaly patterns distinct from those in other countries. Cross-national replication studies would be valuable for assessing the generalizability of our framework.
@@ -543,6 +560,18 @@ Fourth, the absence of definitive ground truth labels---the fundamental challeng
 Fifth, our approach treats each hospital-year observation independently, ignoring temporal dependencies within each hospital's financial trajectory. A hospital experiencing a sudden cost increase may exhibit different risk characteristics than one with chronically elevated costs, but our cross-sectional anomaly detection does not distinguish between these scenarios.
 
 Finally, SHAP explanations for the Isolation Forest reflect that model's perspective on anomaly; other algorithms may assign different importance to the same features.
+
+\textbf{Public hospital confound.} We acknowledge that public hospitals constitute 54.4\% of consensus anomalies despite representing only 25.5\% of the sample. This overrepresentation partially reflects genuine structural differences in public hospital finances rather than operational dysfunction. However, the consensus mechanism captures multidimensional financial patterns beyond ownership alone, as evidenced by the contribution of cost structure ratios and subsidy dependence to anomaly scores.
+
+\textbf{Circular validation.} A methodological limitation of unsupervised anomaly detection validation is its inherently circular nature: algorithms identify statistically unusual observations, and subsequent analysis confirms their unusual characteristics. The key validation in our framework is not that anomalies have unusual values---which is tautological---but rather that (1) they do NOT simply replicate deficit labels (47.4\% overlap, $p=0.414$), demonstrating that the approach captures distinct financial patterns, and (2) temporal trends reveal increasing financial heterogeneity. Future work should pursue external validation against concrete outcomes such as hospital closures, regulatory interventions, or credit rating downgrades.
+
+\textbf{Consensus threshold.} The consensus threshold of three out of five algorithms represents a majority-voting rule, a natural choice that balances sensitivity and specificity. A lower threshold (2/5) would increase sensitivity at the cost of more false positives, while a higher threshold (4/5) would yield fewer but more robust anomalies. In deployment, this threshold should be treated as a tunable parameter calibrated to the regulator's tolerance for false positives versus missed detections.
+
+\textbf{Contamination parameter.} Setting the contamination parameter to 0.1 introduces a semi-supervised assumption about the expected anomaly rate. While this value was chosen based on domain expectations, the true anomaly rate is unknown. The sensitivity analysis in Section~\ref{subsec:sensitivity} partially addresses this concern, but future work should explore contamination-free approaches or data-driven threshold selection.
+
+\textbf{Survivorship bias.} The balanced panel design, while eliminating compositional bias, introduces survivorship bias by excluding hospitals that closed during 2019--2023. These excluded institutions may represent the most severe cases of financial distress, potentially causing our analysis to underestimate both the prevalence and severity of financial anomalies.
+
+\textbf{Simple baselines.} We acknowledge that simple rule-based approaches---such as flagging hospitals exceeding predefined ratio thresholds---could serve as practical baselines. The advantage of the unsupervised approach is that it does not require predefined thresholds and can detect multivariate patterns invisible to univariate rules. Nevertheless, future work should formally compare detection performance against rule-based and supervised alternatives.
 
 \subsection{Sensitivity to the Contamination Parameter}
 \label{subsec:sensitivity}
@@ -562,7 +591,7 @@ This study introduced a multi-algorithm consensus framework for unsupervised ano
 
 The moderate inter-algorithm agreement (Jaccard 0.24--0.50) validates the consensus approach, as it demonstrates that multiple algorithmic perspectives strengthen anomaly identification beyond what any single method achieves. The temporal analysis reveals an increasing anomaly rate in the post-COVID recovery period (8.5\% in 2023 vs. 6.1\% in 2019), highlighting growing financial heterogeneity in the healthcare sector.
 
-Critically, the limited overlap between unsupervised anomalies and accounting deficits (47.4\%) demonstrates that anomaly detection captures structurally unusual financial patterns beyond simple profitability, offering a complementary surveillance tool for healthcare regulators. Combined with SHAP-based explainability, the framework provides both detection capability and actionable interpretability.
+Critically, the limited overlap between unsupervised anomalies and accounting deficits (47.4\%) demonstrates that anomaly detection captures structurally unusual financial patterns beyond simple profitability, potentially offering a complementary surveillance tool for healthcare regulators. Combined with SHAP-based explainability, the framework provides both detection capability and actionable interpretability.
 
 Several directions for future research emerge from this work.
 
@@ -587,8 +616,15 @@ This research received no external funding.
 \section*{Data Availability}
 The hospital financial data used in this study is publicly available from the Korea Health Industry Development Institute (KHIDI) portal. Analysis code is available at \url{https://github.com/yjkim0123/hospital-anomaly-detection}.
 
+\section*{Declaration of Generative AI Use}
+Generative AI tools were used for language editing and formatting assistance during manuscript preparation.
+All scientific content, data analysis, interpretation, and conclusions are solely the work of the authors, who take full responsibility for the accuracy and integrity of this paper.
+
+\section*{Conflict of Interest Statement}
+The authors declare that there are no conflicts of interest.
+
 \section*{Acknowledgment}
-The authors thank the Health Insurance Review and Assessment Service (HIRA) for providing publicly available hospital financial data.
+The authors thank the Korea Health Industry Development Institute (KHIDI) for providing publicly available hospital financial data.
 
 \bibliographystyle{IEEEtran}
 \bibliography{refs}
